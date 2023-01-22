@@ -67,12 +67,14 @@ def create_movie(id: int = Body(), title: str = Body(), overview: str = Body(), 
 
 @app.delete("/movies/{id}", tags=["movies"])
 def delete_movie(id: int):
-    global movies
+    for movie in movies:
+        if movie["id"] == id:
+            movies.remove(movie)
+            return movies
     
-    return peliculas
     
-@app.put("/movies/", tags=["movies"])
-def update_movie(id: int = Body(), title: str = Body(), overview: str = Body(), year:int = Body(), rating: float = Body(), category: str = Body()):
+@app.put("/movies/{id}", tags=["movies"])
+def update_movie(id: int, title: str = Body(), overview: str = Body(), year:int = Body(), rating: float = Body(), category: str = Body()):
     for movie in movies:
         if movie["id"] == id:
             movie.update(
