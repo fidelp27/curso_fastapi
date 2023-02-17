@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
+from fastapi.responses import RedirectResponse
 from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
 from routers.movie import movie_router
@@ -17,9 +18,9 @@ app.include_router(auth_router)
 Base.metadata.create_all(bind=engine)
 
 
-@app.get('/', tags=['home'])
+@app.get('/', response_class=HTMLResponse, tags=['home'])
 def message():
-    return HTMLResponse('<h1>Hello world</h1>')
+    return RedirectResponse("/docs")
 
 
 if __name__ == "__main__":
